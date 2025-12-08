@@ -1,0 +1,2 @@
+Covariance(CI, Market): 0.0016875521599513043
+Variance(Market): 0.0018963895762267988
