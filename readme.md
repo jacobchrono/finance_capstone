@@ -2,7 +2,7 @@
 
 This repository contains a collection of scripts developed for a finance capstone project centered on calculating CAPM beta, pulling financial data, and resolving date-alignment issues across datasets.
 
-The project explored multiple approaches, but ultimately **`date_issue_fix.py`** emerged as the correct and complete solution. The other scripts remain for documentation, experimentation, and future development.
+The project explored multiple approaches, but ultimately **`date_issue_fix_2.py`** emerged as the correct and complete solution. The other scripts remain for documentation, experimentation, and future development.
 
 ---
 
