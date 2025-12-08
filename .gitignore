@@ -1,0 +1,47 @@
+# -------------------------
+# Python / Streamlit Project Gitignore
+# -------------------------
+
+# Ignore data folders (raw inputs, outputs, scratch files)
+data/
+data_out/
+
+# If you want to ignore ONLY Excel/CSV inside data folders:
+# data/*.csv
+# data/*.xlsx
+# data_out/*.csv
+# data_out/*.xlsx
+
+# Python cache + compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyd
+*.pkl
+
+# Virtual environments
+venv/
+.env/
+.env*/
+*.env
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# VSCode settings
+.vscode/
+
+# Streamlit cache
+.streamlit/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Backup or temp files
+*.bak
+*.tmp
