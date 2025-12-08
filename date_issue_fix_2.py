@@ -1,6 +1,6 @@
 ## Created with assistance from ChatGPT
 ## Jacob Clement
-## https://chatgpt.com/share/693611a6-ada8-800a-8a2a-3127027e6601
+## https://chatgpt.com/share/6936207a-f568-800a-9203-8b73165684fd
 
 import pandas as pd
 import numpy as np
@@ -10,6 +10,7 @@ import statsmodels.api as sm
 import matplotlib.pyplot as plt
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import os  # for saving output files
 
 
 # -----------------------------------------------------------
@@ -142,6 +143,7 @@ def compute_betas(df: pd.DataFrame, stock_col: str, mkt_col: str, rf_col: str):
     }
     return results
 
+
 # -----------------------------------------------------------
 # PLOTTING HELPERS
 # -----------------------------------------------------------
@@ -246,7 +248,7 @@ def run_beta_engine(
     print(f"  Beta_excess = {beta_excess:.4f}")
     print("======================================================\n")
 
-    # Optional: CAPM expected return using excess beta
+    # Optional: CAPM expected return using excess beta (monthly)
     rf_mean = data["rf_monthly"].mean()
     mkt_mean = data["mkt_ret"].mean()
     capm_expected = rf_mean + beta_excess * (mkt_mean - rf_mean)
@@ -254,6 +256,47 @@ def run_beta_engine(
     print(f"Average monthly RF: {rf_mean:.4%}")
     print(f"Average monthly market return: {mkt_mean:.4%}")
     print(f"CAPM expected monthly return (using beta_excess): {capm_expected:.4%}")
+
+    # -----------------------------------------------------------
+    # SAVE OUTPUT DATA TO EXCEL
+    # -----------------------------------------------------------
+
+    # Make sure data folder exists
+    os.makedirs("data", exist_ok=True)
+
+    # Annualize the monthly averages
+    rf_mean_annual = rf_mean * 12
+    mkt_mean_annual = mkt_mean * 12
+
+    def capm_cost_of_capital(beta):
+        return rf_mean_annual + beta * (mkt_mean_annual - rf_mean_annual)
+
+    summary = pd.DataFrame({
+        "alpha_normal": [alpha_normal],
+        "beta_normal": [beta_normal],
+        "beta_zero": [beta_zero],
+        "alpha_excess": [alpha_excess],
+        "beta_excess": [beta_excess],
+        "avg_monthly_rf": [rf_mean],
+        "avg_monthly_market_ret": [mkt_mean],
+        "avg_annual_rf": [rf_mean_annual],
+        "avg_annual_market_ret": [mkt_mean_annual],
+        "cost_of_capital_normal": [capm_cost_of_capital(beta_normal)],
+        "cost_of_capital_zero": [capm_cost_of_capital(beta_zero)],
+        "cost_of_capital_excess": [capm_cost_of_capital(beta_excess)],
+    })
+
+    # Output filename uses tickers + RF series
+    # Note: replace characters like '^' in filename
+    safe_stock = stock_ticker.replace("^", "")
+    safe_mkt = market_ticker.replace("^", "")
+    output_path = f"data/{safe_stock}_{safe_mkt}_{rf_series}_beta_data.xlsx"
+
+    with pd.ExcelWriter(output_path) as writer:
+        data.to_excel(writer, sheet_name="data")
+        summary.to_excel(writer, sheet_name="beta_summary", index=False)
+
+    print(f"\nData and beta summary saved to: {output_path}\n")
 
     # Plots
     plot_regression(
