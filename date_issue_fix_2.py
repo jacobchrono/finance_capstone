@@ -13,10 +13,11 @@ from dateutil.relativedelta import relativedelta
 import os  # for saving output files
 
 
+
 # -----------------------------------------------------------
 # CONFIG: put your FRED API key here
 # -----------------------------------------------------------
-FRED_API_KEY = "290571b3503560d831cb298c225e6cb1"   # <-- CHANGE THIS
+FRED_API_KEY = "your api key"   # <-- CHANGE THIS
 
 
 # -----------------------------------------------------------
