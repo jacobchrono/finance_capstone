@@ -12,13 +12,10 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import os  # for saving output files
 
-
-
 # -----------------------------------------------------------
 # CONFIG: put your FRED API key here
 # -----------------------------------------------------------
-FRED_API_KEY = "your api key"   # <-- CHANGE THIS
-
+FRED_API_KEY = "change me"   # <-- CHANGE THIS
 
 # -----------------------------------------------------------
 # DATA PULL HELPERS
@@ -60,7 +57,6 @@ def get_month_end_prices_yahoo(ticker: str, start: str, end: str) -> pd.DataFram
     
     return monthly
 
-
 def get_month_end_fred(series_id: str, start: str, end: str, api_key: str) -> pd.DataFrame:
     """
     Download FRED series and resample to month-end.
@@ -82,7 +78,6 @@ def get_month_end_fred(series_id: str, start: str, end: str, api_key: str) -> pd
     # Month-end values
     monthly = df.resample("ME").last()
     return monthly
-
 
 # -----------------------------------------------------------
 # BETA CALCULATION
@@ -143,7 +138,6 @@ def compute_betas(df: pd.DataFrame, stock_col: str, mkt_col: str, rf_col: str):
         "beta_excess": beta_excess,
     }
     return results
-
 
 # -----------------------------------------------------------
 # PLOTTING HELPERS
